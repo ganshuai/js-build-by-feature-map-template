@@ -33,13 +33,6 @@ var remoteProxyHandle = config.isMockMode ? localProxyHandle : proxy({
 
 var pageDirectory = path.resolve(__dirname, config.pagesDirectory)
 var pageHandle = express.static(pageDirectory)
-app.use(config.pagesUrl, function(req, res, next) {
-  if(/\.html\b/.test(req.originalUrl)) {
-    return pageHandle(req, res, next)
-  }
-
-  return remoteProxyHandle(req, res, next)
-})
 
 service.service(app, {
   route: config.scriptsUrl,
@@ -47,6 +40,13 @@ service.service(app, {
   buildConfig: {
     isDifferentFile: true
   }
+})
+
+app.use(config.pagesUrl, function(req, res, next) {
+  if(/\.html\b/.test(req.originalUrl)) {
+    return pageHandle(req, res, next)
+  }
+  return remoteProxyHandle(req, res, next)
 })
 
 app.use(config.ajaxBaseUrl, localProxyHandle)
