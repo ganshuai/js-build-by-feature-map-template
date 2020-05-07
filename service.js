@@ -1,6 +1,5 @@
 var service = require('js-build-by-feature-map-express-service')
 var express = require('express')
-var webpackConfig = require('./webpack.config')
 var path = require('path')
 var proxy = require('http-proxy-middleware')
 var open = require('open')
@@ -34,6 +33,7 @@ var remoteProxyHandle = config.isMockMode ? localProxyHandle : proxy({
 var pageDirectory = path.resolve(__dirname, config.pagesDirectory)
 var pageHandle = express.static(pageDirectory)
 
+//动态编译
 service.service(app, {
   route: config.scriptsUrl,
   webpackConfig: config.webpackConfig,
